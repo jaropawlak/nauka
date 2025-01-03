@@ -29,7 +29,7 @@ function saveWrongQuestions() {
 // Mark Daily Quiz Correct
 correctBtn.addEventListener("click", () => {
   if (quiz === "wrong") {
-    const currentQuestion = questions[currentIndex];
+    const currentQuestion = quiz == "daily" ? dailyQuestions[dailyCurrentIndex] : questions[currentIndex];
     wrongQuestions = wrongQuestions.filter(q => q.question !== currentQuestion.question);
     saveWrongQuestions();
   }
@@ -47,7 +47,7 @@ correctBtn.addEventListener("click", () => {
 // Mark Daily Quiz Incorrect
 incorrectBtn.addEventListener("click", () => {
   if (quiz !== "wrong") {
-  const currentQuestion = questions[currentIndex];
+  const currentQuestion = quiz == "daily" ? dailyQuestions[dailyCurrentIndex] : questions[currentIndex];
   // Add to wrongQuestions if not already there
   if (!wrongQuestions.some(q => q.question === currentQuestion.question)) {
       wrongQuestions.push(currentQuestion);
@@ -117,29 +117,30 @@ function getSelectedValues() {
 // Handle Daily Quiz button click
 dailyQuizBtn.addEventListener("click", async () => {
  
-  const selectedFiles = Array.from(
-    datasetsContainer.querySelectorAll("input:checked")
-  ).map((input) => input.value);
+  allQuestions = [];
+  const sources = getSelectedValues();
+  let counter = 0;
+  sources.forEach( (selectedId) =>   {
+         loadDataById(selectedId, function(data) {
+          allQuestions = allQuestions.concat(data);
+            counter++;
+            document.getElementById("dataset-selection").style.display = "none";
+            quizContainer.style.display = "block";
+            if (counter === sources.length) {
+              allQuestions = shuffleArray(allQuestions);
+             
+              loadDailyProgress(allQuestions);
+              startDailyQuiz();
 
-  if (selectedFiles.length === 0) {
-    alert("Please select at least one dataset.");
-    return;
-  }
+            }
+           
+          });
+  });
+    
 
-  let allQuestions = [];
-  for (const file of selectedFiles) {
-    if (file.startsWith("datasets/")) {
-      const firebaseData = await loadFirebaseDataset(file);
-      allQuestions = allQuestions.concat(firebaseData);
-    } else {
-      const response = await fetch(file);
-      const data = await response.json();
-      allQuestions = allQuestions.concat(data);
-    }
-  }
+ 
 
-  loadDailyProgress(allQuestions);
-  startDailyQuiz();
+  
 });
 // Utility to shuffle questions randomly
 function shuffleArray(array) {
