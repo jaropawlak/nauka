@@ -4,16 +4,16 @@
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>IndexedDB - Wyszukiwanie danych</title>
+     
       <link rel="stylesheet" href="style.css" />
     </head>
     <body>
      
       <h3>Wybierz plik do załadowania:</h3>
       <div id="dataset-selection">
-      <select id="selectSource">
+      <div id="selectSource">
         
-      </select>
+      </div>
       </div>
       <button id="start-btn">Start</button>
       <button id="daily-quiz-btn">Codzienny</button>
@@ -23,9 +23,9 @@
       <div id="quiz-container" style="display: none; padding:50px">
         <p id="question"></p>
         <button id="reveal-btn">Pokaż odpowiedź</button>
-          <div>
-            <p id="answer" style="display: none;"></p>
-          </div>
+        <div>
+        <p id="answer" style="display: none;"></p>
+      </div>
         <button id="correct-btn">Poprawna</button>
         <button id="incorrect-btn">Niepoprawna</button>
         <p id="progress" style="padding:50px"></p>
