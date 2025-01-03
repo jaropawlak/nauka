@@ -67,18 +67,34 @@ incorrectBtn.addEventListener("click", () => {
   }
 });
  
+function getSelectedValues() {
+  const checkedCheckboxes = document.querySelectorAll('#selectSource input[type="checkbox"]:checked');
+  
+  // Extract values into an array
+  const values = Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
+  return values;
+}
  // Start the quiz
  function startQuiz() {
   quiz = "standard"
-    const selectedId = selectSource.value;
+  questions = [];
+  const sources = getSelectedValues();
+  let counter = 0;
+  sources.forEach( (selectedId) =>   {
          loadDataById(selectedId, function(data) {
-            questions = data;
+            questions = questions.concat(data);
+            counter++;
             document.getElementById("dataset-selection").style.display = "none";
             quizContainer.style.display = "block";
-            showQuestion();
-          }
-        );
-    }
+            if (counter === sources.length) {
+              questions = shuffleArray(questions);
+              showQuestion();
+            }
+           
+          });
+  });
+    
+}
   
   // Show the current question
   function showQuestion() {
@@ -235,8 +251,12 @@ function updateDailyProgress() {
         const storeName = 'cachedData';
     
         // Lista adresów URL
-        const baseUrl = 'https://raw.githubusercontent.com/jaropawlak/nauka/refs/heads/main/data/'; 
+        const baseUrl = 'http://localhost:8000/data/'; 
         const indexUrl = 'index.json';
+
+    const urls = [
+      { id: 'data1', url: 'http://localhost:8000/data/dataset1.json' }
+    ];
     
         let db;
     
@@ -333,14 +353,25 @@ function updateDailyProgress() {
         async function refreshIndex() {
              loadDataById("index", function(data) {
                 for (const url of data || []) {
-              const option = document.createElement('option');
-              option.value = url.title;
-              option.textContent = url.title;
-              selectSource.appendChild(option);
+                  const checkbox = document.createElement("input"); // Create input element
+                  checkbox.type = "checkbox"; // Set type to checkbox
+                  checkbox.value =  url.title; // Set value from array
+                  checkbox.id =  url.title; // Set ID for label association
+                
+                  const label = document.createElement("label"); // Create label
+                  label.htmlFor =  url.title; // Associate label with checkbox
+                  label.appendChild(document.createTextNode( url.name)); // Add text to label
+                
+                  const lineBreak = document.createElement("br"); // Add line break
+                
+                  // Append checkbox, label, and line break to the container
+                  selectSource.appendChild(checkbox);
+                  selectSource.appendChild(label);
+                  selectSource.appendChild(lineBreak);
+
+            
             }
-             })
-            //fill selectSource with urls from data
-           
+            });
           
         }
         // Obsługa przycisków
