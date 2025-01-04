@@ -252,13 +252,10 @@ function updateDailyProgress() {
         const storeName = 'cachedData';
     
         // Lista adresów URL
-        const baseUrl = 'http://localhost:8000/data/'; 
+        const baseUrl = 'https://raw.githubusercontent.com/jaropawlak/nauka/refs/heads/main/data/'; 
         const indexUrl = 'index.json';
 
-    const urls = [
-      { id: 'data1', url: 'http://localhost:8000/data/dataset1.json' }
-    ];
-    
+  
         let db;
     
         function startWrongQuestionsQuiz() {
