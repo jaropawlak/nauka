@@ -29,4 +29,76 @@
   {"question" : "Ilu ploidalne są mikrospory?", "answer": "Są haploidalne."},
   {"question": "Co się dzieje z trzema makrosporami po podziale mejotycznym komórki macierzystej makrospor?", "answer": "Degenerują"},
   {"question": "Co to są słupki?", "answer": "Struktura powstała na skutek zrośnięcia się jednego owocolistka lub kilku owocolistków."}
+  ,{"question": "Czy rośliny nasienne są ogranowcami?", "answer": "tak"}
+  ,{"question": "Czy rośliny nasienne są roślinami naczyniowymi?", "answer": "tak"}
+  ,{"question": "Jak inaczej nazywają się makrosporofile?", "answer": "Owocolistki"}
+  ,{"question": "Jak inaczej nazywają się owocolistki?", "answer": "Makrosporofile"}
+  ,{"question": "Jak inaczej nazywamy makrosporangia?", "answer": "Zalążki"}
+  ,{"question": "Co się rozwija w zalążkach?", "answer": "Makrospory a następnie silnie zredukowane gametofity żeńskie z komórkami jajowymi."}
+  ,{"question": "Czy zapłodnienie roślin nasiennych wymaga obecności wody?", "answer": "nie"}
+  ,{"question": "Jakie rośliny należą do nagozalążkowych?", "answer": "Wieloletnie rośliny drzewiaste - najczęściej drzewa, rzedziej krzewy."}
+  ,{"question": "Czym charakteryzują się korzenie i łodygi roślin nagozalążkowych?", "answer": "Zazwyczaj intensywnym przyrostem wtórnym."}
+  ,{"question": "Co jest charakterystyczną cechą roślin nagozalążkowych?", "answer": "Jednopłciowe kwiaty oraz nieosłonięte zalążki i nasiona (stąd nazwa gromady - nagozalążkowe lub nagonasienne)."}
+  ,{"question": "Czy rośliny szpilkowe są nagozalążkowe czy okrytozalążkowe?", "answer": "Nagozalążkowe."}
+  ,{"question": "Z czego się składa kwiatostan żeński roślin nagozalążkowych?", "answer": "Z kwiatów żeńskich. Każdy z kwiatów składa się z łuski nasiennej, łuski wspierającej i zalążka."}
+,{"question": "Z czego składa się kwiat męski roślin nagozalążkowych?", "answer": "Z osi kwiatowej i osadzonych na niej licznych pręcików. Każdy pręcik ma u podstawy dwa woreczki pyłkowe - mikrosporangia."}
+,{"question": "Z czego powstają szyszki?", "answer": "Z kwiatostanów żeńskich."},
+{"question": "Jak nazywają się rośliny nasienne, których nasiona nie są okryte owocnią?", "answer": "Nagonasienne"},
+  {"question": "Jak nazywają się rośliny nasienne, których nasiona są chronione przez owocnię?", "answer": "Okrytonasienne"},
+  {"question": "Podaj przykład rośliny nagonasiennej.", "answer": "Sosna"},
+  {"question": "Podaj przykład rośliny okrytonasiennej.", "answer": "Jabłoń"},
+  {"question": "Jak nazywa się organ rozmnażania generatywnego u okrytonasiennych?", "answer": "Kwiat"},
+  {"question": "Jak nazywa się struktura rozmnażania generatywnego u nagonasiennych?", "answer": "Szyszka"},
+  {"question": "Czy rośliny nagonasienne mają kwiaty?", "answer": "Nie"},
+  {"question": "Która grupa roślin nasiennych dominuje we współczesnej florze?", "answer": "Okrytonasienne"},
+  {"question": "W jakiej formie występuje gametofit żeński u nagonasiennych?", "answer": "Bielmo pierwotne"},
+  {"question": "W jakiej formie występuje gametofit żeński u okrytonasiennych?", "answer": "Zarodkowy woreczek"},
+  {"question": "Jaką funkcję pełni owoc u roślin okrytonasiennych?", "answer": "Chroni nasiona i ułatwia ich rozsiewanie"},
+  {"question": "Jaka jest główna różnica w budowie nasion nagonasiennych i okrytonasiennych?", "answer": "Nasiona nagonasiennych są nagie, a okrytonasiennych osłonięte owocnią"},
+  {"question": "Czy nagonasienne są roślinami jedno- czy dwuliściennymi?", "answer": "Jednoliścienne"},
+  {"question": "Jakie struktury zapobiegają utracie wody u nagonasiennych?", "answer": "Grube kutikule i szpilkowate liście"},
+  {"question": "Czy okrytonasienne są bardziej zróżnicowane niż nagonasienne?", "answer": "Tak"},
+  {"question": "Jakie rośliny nasienne dominowały w erze mezozoicznej?", "answer": "Nagonasienne"},
+  {"question": "Które rośliny są bardziej przystosowane do życia w suchych środowiskach?", "answer": "Nagonasienne"},
+  {"question": "Jaka jest funkcja pyłku u roślin nasiennych?", "answer": "Transport komórek plemnikowych do zalążka"},
+  {"question": "Jakie są dwa główne typy systemów korzeniowych u okrytonasiennych?", "answer": "Palowy i wiązkowy"},
+  {"question": "Jakie nasiona mają rośliny jednoliścienne?", "answer": "Jednoliścienne mają nasiona z jednym liścieniem zarodkowym."},
+  {"question": "Co to jest owoc w sensie botanicznym?", "answer": "Owoc to organ powstały z zalążni kwiatu, zawierający nasiona."},
+  {"question": "Czym różnią się rośliny jednoliścienne od dwuliściennych?", "answer": "Jednoliścienne mają jeden liścień, a dwuliścienne mają dwa liścienie."},
+  {"question": "Podaj przykład rośliny dwuliściennej.", "answer": "Fasola"},
+  {"question": "Podaj przykład rośliny jednoliściennej.", "answer": "Kukurydza"},
+  {"question": "Jakie tkanki przewodzące występują u roślin nasiennych?", "answer": "Drewno i łyko"},
+  {"question": "Jakie są funkcje łyka?", "answer": "Transport asymilatów z liści do innych części rośliny."},
+  {"question": "Jakie są funkcje drewna?", "answer": "Transport wody i soli mineralnych z korzeni do liści."},
+  {"question": "Co to jest kiełkowanie epigeiczne?", "answer": "Kiełkowanie nadziemne, gdy liścienie wynoszone są ponad powierzchnię gleby."},
+  {"question": "Co to jest kiełkowanie hypogeiczne?", "answer": "Kiełkowanie podziemne, gdy liścienie pozostają pod ziemią."},
+  {"question": "Jakie są główne rodzaje owoców?", "answer": "Pojedyncze, zbiorowe i wieloorzeszkowe."},
+  {"question": "Jakie są przykłady owoców suchych?", "answer": "Orzech, strąk, torebka."},
+  {"question": "Jakie są przykłady owoców mięsistych?", "answer": "Jagoda, pestkowiec."},
+  {"question": "Co to jest roślina jednopienna?", "answer": "Roślina, która ma kwiaty męskie i żeńskie na jednym osobniku."},
+  {"question": "Co to jest roślina dwupienna?", "answer": "Roślina, która ma kwiaty męskie i żeńskie na różnych osobnikach."},
+  {"question": "Jakie znaczenie ekologiczne mają rośliny nasienne?", "answer": "Stanowią podstawę łańcuchów pokarmowych i produkują tlen."},
+  {"question": "Co to jest łagiewka pyłkowa?", "answer": "Struktura umożliwiająca transport plemników do zalążka."},
+  {"question": "Czym różnią się nagonasienne od okrytonasiennych pod względem procesu zapłodnienia?", "answer": "Nagonasienne mają wolne zalążki, a okrytonasienne chronione zalążnie."},
+  {"question": "Co to jest zarodek rośliny?", "answer": "Młoda roślina powstająca z zapłodnionej komórki jajowej."},
+  {"question": "Jakie są funkcje łodygi u roślin nasiennych?", "answer": "Transport wody, soli mineralnych i asymilatów oraz podtrzymywanie liści."},
+  {"question": "Co to jest owocolistek?", "answer": "Element kwiatu, który tworzy zalążnię."},
+  {"question": "Co to jest zarodnia?", "answer": "Struktura wytwarzająca zarodniki."},
+  {"question": "Jakie znaczenie ma bielmo w nasieniu?", "answer": "Stanowi materiał zapasowy dla rozwijającego się zarodka."},
+  {"question": "Jakie są typy kwiatostanów u roślin nasiennych?", "answer": "Groniaste, wiechowate, baldachowate."},
+  {"question": "Co to jest kiełkowanie?", "answer": "Proces wzrostu zarodka rośliny z nasienia."},
+  {"question": "Jakie struktury biorą udział w fotosyntezie?", "answer": "Liście zawierające chloroplasty."},
+  {"question": "Co to jest kambium?", "answer": "Tkanka twórcza odpowiedzialna za przyrost wtórny roślin."},
+  {"question": "Jak rośliny nasienne rozmnażają się płciowo?", "answer": "Przez zapylenie i zapłodnienie."},
+  {"question": "Co to jest partenokarpia?", "answer": "Powstawanie owoców bez zapłodnienia."},
+  {"question": "Czym jest owocnia?", "answer": "Część owocu otaczająca nasiona."},
+  {"question": "Jakie typy nasion występują u roślin nasiennych?", "answer": "Z bielmem i bezbielmowe."},
+  {"question": "Jakie są główne funkcje korzeni?", "answer": "Pobieranie wody i soli mineralnych oraz zakotwiczenie rośliny."},
+  {"question": "Co to jest nasiono?", "answer": "Struktura zawierająca zarodek, materiał zapasowy i osłonkę."},
+  {"question": "Jakie procesy zachodzą podczas zapylenia?", "answer": "Przeniesienie pyłku na znamię słupka."},
+  {"question": "Jakie rośliny nasienne wykorzystują wiatr do zapylenia?", "answer": "Większość nagonasiennych i niektóre okrytonasienne."},
+  {"question": "Czym jest heterosporia?", "answer": "Wytwarzanie dwóch rodzajów zarodników – mikrospor i makrospor."},
+  {"question": "Co to jest drewno wtórne?", "answer": "Tkanka przewodząca powstająca w wyniku działania kambium."},
+  {"question": "Jakie znaczenie mają nasiona w przystosowaniu roślin do życia na lądzie?", "answer": "Chronią zarodek i umożliwiają jego rozsiewanie."},
+  {"question": "Co to jest słupek?", "answer": "Żeński organ rozrodczy kwiatu składający się z zalążni, szyjki i znamienia."}
 ]
