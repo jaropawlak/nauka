@@ -13,10 +13,11 @@ h1 {
 }
 
 button {
-  margin: 50px;
-  padding: 20px;
+  margin: 0px;
+  padding: 40px;
   font-size: large;
   cursor: pointer;
+  height: 100px;
 }
 
 p {
