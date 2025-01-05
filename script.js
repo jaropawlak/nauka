@@ -11,6 +11,7 @@
   const quizContainer = document.getElementById("quiz-container");
   const questionEl = document.getElementById("question");
   const answerEl = document.getElementById("answer");
+  const answerContainer = document.getElementById("answer-container");
   const revealBtn = document.getElementById("reveal-btn");
   const correctBtn = document.getElementById("correct-btn");
   const incorrectBtn = document.getElementById("incorrect-btn");
@@ -109,6 +110,7 @@ function getSelectedValues() {
     questionEl.textContent = questionObj.question;
     answerEl.textContent = questionObj.answer;
     answerEl.style.display = "none";
+    answerContainer.style.display = "none";
   
     updateProgress();
   }
@@ -172,6 +174,7 @@ function showDailyQuestion() {
   questionEl.textContent = questionObj.question;
   answerEl.textContent = questionObj.answer;
   answerEl.style.display = "none";
+  answerContainer.style.display = "none";
 
   updateDailyProgress();
 }
@@ -236,6 +239,7 @@ function updateDailyProgress() {
   // Reveal the answer
   revealBtn.addEventListener("click", () => {
     answerEl.style.display = "block";
+    answerContainer.style.display = "block";
   });
   
  
