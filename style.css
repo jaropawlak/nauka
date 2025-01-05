@@ -1,25 +1,109 @@
+/* General body style */
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
-h1 {
-  text-align: center;
-}
-
+/* Center content */
 #app {
   max-width: 600px;
   margin: auto;
+  padding: 10px;
 }
 
+/* Header styling */
+h3 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Button styles */
 button {
-  margin: 0px;
-  padding: 40px;
-  font-size: large;
+  padding: 15px 20px;
+  font-size: 16px;
   cursor: pointer;
-  height: 100px;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
-p {
-  margin: 10px 0;
+button:hover {
+  background-color: #ddd;
+}
+
+/* Main menu buttons */
+#start-btn, #daily-quiz-btn, #wrongQuiz {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Quiz buttons */
+#correct-btn, #incorrect-btn {
+  width: 48%;
+  margin: 5px 1%;
+}
+
+/* Menu button styling */
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Quiz container */
+#quiz-container {
+  display: none;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Question styling */
+#question {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Answer styling */
+#answer {
+  font-size: 18px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+}
+
+/* Progress display */
+#progress {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Hidden buttons until needed */
+.hidden {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #question {
+    font-size: 18px;
+  }
+
+  #answer {
+    font-size: 16px;
+  }
 }
