@@ -1,0 +1,6 @@
+[
+    {"question": "Wzór skróconego mnożenia: A^2 - b^2 = ...", "answer": "(A + B)(A - B)"},
+    {"question": "Wzór skróconego mnożenia: (A + B)(A - B) = ...", "answer": "A^2 - b^2"},
+    {"question": "Wg twierdzenia Bezouta wielomian x^4 + 2x^3 - 8x^2 +7x -8 jakie może mie dzelniki całkowite?", "answer": "1,2,4,8,-1,-2,-4,-8"},
+    {"question": "Jesli liczba 5 jest pierwiastkiem mielomianu to dzieli się on przez ...", "answer": "(x - 5)"} 
+]
