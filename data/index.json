@@ -1,4 +1,5 @@
 [
     { "name": "Rośliny nasienne", "title": "okrytonasienne", "file": "okrytonasienne.json"},
-{ "name": "Mchowce", "title": "mchowce", "file": "mchowce.json"},
+    { "name": "Mchowce", "title": "mchowce", "file": "mchowce.json"}
+     ,{ "name": "wielomiany", "title": "wielomiany", "file": "wielomiany.json"}
 ]
