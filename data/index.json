@@ -1,5 +1,6 @@
 [
-    { "name": "Rośliny nasienne", "title": "okrytonasienne", "file": "okrytonasienne.json"},
-    { "name": "Mchowce", "title": "mchowce", "file": "mchowce.json"}
-     ,{ "name": "wielomiany", "title": "wielomiany", "file": "wielomiany.json"}
+    { "name": "Rosliny nasienne", "title": "okrytonasienne", "file": "okrytonasienne.json"}
+    ,{ "name": "Mchowce", "title": "mchowce", "file": "mchowce.json"}
+    ,{ "name": "wielomiany", "title": "wielomiany", "file": "wielomiany.json"}
+    ,{ "name": "Drgania", "title": "drgania", "file": "drgania.json"}
 ]
