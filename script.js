@@ -108,7 +108,7 @@ function getSelectedValues() {
   
     const questionObj = questions[currentIndex];
     questionEl.textContent = questionObj.question;
-    answerEl.textContent = questionObj.answer;
+    answerEl.innerHTML = questionObj.answer;
     answerEl.style.display = "none";
     answerContainer.style.display = "none";
   
