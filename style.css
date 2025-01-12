@@ -43,7 +43,7 @@ button:hover {
 
 /* Quiz buttons */
 #correct-btn, #incorrect-btn {
-  width: 48%;
+  width: 100%;
   margin: 5px 1%;
 }
 
