@@ -91,7 +91,13 @@ button:hover {
 .hidden {
   display: none;
 }
-
+.group, .subgroup {
+      margin-left: 20px;
+}
+.expandable {
+      cursor: pointer;
+      font-weight: bold;
+}
 /* Responsive adjustments */
 @media (max-width: 600px) {
   button {

@@ -256,8 +256,9 @@ function updateDailyProgress() {
         const storeName = 'cachedData';
     
         // Lista adresów URL
-        const baseUrl = 'https://raw.githubusercontent.com/jaropawlak/nauka/refs/heads/main/data/'; 
-        const indexUrl = 'index.json';
+        const baseUrl = 'data/'; 
+
+const indexUrl = 'index.json';
 
   
         let db;
@@ -332,7 +333,28 @@ function updateDailyProgress() {
           alert('Dane zostały usunięte z IndexedDB.');
           output.innerHTML = '';
         }
-    
+ function extractTitle(data) {
+  const result = [];
+
+  function traverse(node) {
+    for (const key in node) {
+      const value = node[key];
+      if (typeof value === "object" && value !== null) {
+        if (value.title && value.file) {
+          // Jeśli obiekt jest liściem, dodaj parę title/name
+          result.push({ title: value.title, file: value.file });
+        } else {
+          // Jeśli to grupa/podgrupa, kontynuuj rekurencję
+          traverse(value);
+        }
+      }
+    }
+  }
+
+  traverse(data);
+  return result;
+}
+
         // Pobieranie danych z wszystkich źródeł
         async function fetchData() {
             try {
@@ -340,7 +362,7 @@ function updateDailyProgress() {
             const urls = await list.json();
             await saveData("index", urls);
           
-            for (const url of urls) {
+		for (const url of extractTitle( urls)) {
               const response = await fetch(baseUrl + url.file);
               if (!response.ok) throw new Error(`Błąd podczas pobierania danych z ${url.url}`);
               const data = await response.json();
@@ -352,30 +374,90 @@ function updateDailyProgress() {
           }
         }
     
-        async function refreshIndex() {
-             loadDataById("index", function(data) {
-                for (const url of data || []) {
-                  const checkbox = document.createElement("input"); // Create input element
-                  checkbox.type = "checkbox"; // Set type to checkbox
-                  checkbox.value =  url.title; // Set value from array
-                  checkbox.id =  url.title; // Set ID for label association
-                
+
+function createRow(item, container){
+    const checkbox = document.createElement("input"); // Create input element
+    const title = item.title;
+    const name = item.title;
+
+    checkbox.type = "checkbox"; // Set type to checkbox
+    checkbox.value = title; // Set value from array
+    checkbox.id = title; // Set ID for label association
+              
                   const label = document.createElement("label"); // Create label
-                  label.htmlFor =  url.title; // Associate label with checkbox
-                  label.appendChild(document.createTextNode( url.name)); // Add text to label
+                  label.htmlFor =  title; // Associate label with checkbox
+                  label.appendChild(document.createTextNode( name)); // Add text to label
                 
                   const lineBreak = document.createElement("br"); // Add line break
                 
                   // Append checkbox, label, and line break to the container
-                  selectSource.appendChild(checkbox);
-                  selectSource.appendChild(label);
-                  selectSource.appendChild(lineBreak);
-
+                  container.appendChild(checkbox);
+                  container.appendChild(label);
+        }
+             async function refreshIndex() {
+             loadDataById("index", function(data) {
+                 createNestedView(data, selectSource);
+		 /*
+		 for (const url in data || []) {
+		     const item = data["url"];
+		     if (item.title) {
+			 createRow(item, selectSource);
+		     } else {
+			 buildIndex(url, item, selectSource);
+		     } */
             
-            }
+            
             });
           
+             }
+
+    function createNestedView(data, container) {
+      for (const key in data) {
+        const value = data[key];
+
+        // Create a container for the group/subgroup or leaf
+        const groupElement = document.createElement("div");
+        groupElement.classList.add("group");
+
+        if (value.title) {
+          // Leaf node: Add a checkbox with the title
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+            checkbox.name = value.title;
+	    checkbox.value = value.title;
+          checkbox.id = value.title;
+
+          const label = document.createElement("label");
+          label.htmlFor = value.title;
+          label.textContent = value.title;
+
+          groupElement.appendChild(checkbox);
+          groupElement.appendChild(label);
+        } else {
+          // Group/Subgroup: Add a title with toggle functionality
+          const titleElement = document.createElement("div");
+          titleElement.classList.add("expandable");
+          titleElement.textContent = key;
+
+          const contentElement = document.createElement("div");
+          contentElement.classList.add("hidden");
+
+          // Add toggle functionality
+          titleElement.addEventListener("click", () => {
+            contentElement.classList.toggle("hidden");
+          });
+
+          // Recursively process nested groups/subgroups
+          createNestedView(value, contentElement);
+
+          groupElement.appendChild(titleElement);
+          groupElement.appendChild(contentElement);
         }
+
+        container.appendChild(groupElement);
+      }
+    }
+     
         // Obsługa przycisków
         document.getElementById('fetchData').addEventListener('click', fetchData);
         document.getElementById('clearData').addEventListener('click', clearData);

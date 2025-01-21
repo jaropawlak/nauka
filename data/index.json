@@ -1,6 +1,36 @@
-[
-    { "name": "Rosliny nasienne", "title": "okrytonasienne", "file": "okrytonasienne.json"}
-    ,{ "name": "Mchowce", "title": "mchowce", "file": "mchowce.json"}
-    ,{ "name": "wielomiany", "title": "wielomiany", "file": "wielomiany.json"}
-    ,{ "name": "Drgania", "title": "drgania", "file": "drgania.json"}
-]
+{
+    "lowiectwo": {
+        "okresy_polowan.txt": {
+            "title": "okresy_polowan",
+            "file": "okresy_polowan.json"
+        }
+    },
+    "szkola": {
+        "fizyka": {
+            "drgania.json": {
+                "title": "drgania.json",
+                "file": "drgania.json"
+            }
+        },
+        "biologia": {
+            "mchy.txt": {
+                "title": "mchy",
+                "file": "mchy.json"
+            },
+            "okrytonasienne.json": {
+                "title": "okrytonasienne.json",
+                "file": "okrytonasienne.json"
+            },
+            "mchowce.json": {
+                "title": "mchowce.json",
+                "file": "mchowce.json"
+            }
+        },
+        "matematyka": {
+            "wielomiany.json": {
+                "title": "wielomiany.json",
+                "file": "wielomiany.json"
+            }
+        }
+    }
+}
