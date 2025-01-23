@@ -256,7 +256,7 @@ function updateDailyProgress() {
         const storeName = 'cachedData';
     
         // Lista adresów URL
-        const baseUrl = 'data/'; 
+        const baseUrl = 'https://jaropawlak.github.io/nauka/data/'; 
 
 const indexUrl = 'index.json';
 
