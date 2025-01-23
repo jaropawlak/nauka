@@ -6,6 +6,16 @@
         }
     },
     "szkola": {
+        "niemiecki": {
+            "czas_przeszly.txt~": {
+                "title": "czas_przeszly~",
+                "file": "czas_przeszly.json~"
+            },
+            "czas_przeszly.txt": {
+                "title": "czas_przeszly",
+                "file": "czas_przeszly.json"
+            }
+        },
         "fizyka": {
             "drgania.json": {
                 "title": "drgania.json",
@@ -16,6 +26,10 @@
             "mchy.txt": {
                 "title": "mchy",
                 "file": "mchy.json"
+            },
+            "#mchy.txt#": {
+                "title": "#mchy#",
+                "file": "#mchy.json#"
             },
             "okrytonasienne.json": {
                 "title": "okrytonasienne.json",
