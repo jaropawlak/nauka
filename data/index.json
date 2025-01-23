@@ -7,10 +7,6 @@
     },
     "szkola": {
         "niemiecki": {
-            "czas_przeszly.txt~": {
-                "title": "czas_przeszly~",
-                "file": "czas_przeszly.json~"
-            },
             "czas_przeszly.txt": {
                 "title": "czas_przeszly",
                 "file": "czas_przeszly.json"
@@ -26,10 +22,6 @@
             "mchy.txt": {
                 "title": "mchy",
                 "file": "mchy.json"
-            },
-            "#mchy.txt#": {
-                "title": "#mchy#",
-                "file": "#mchy.json#"
             },
             "okrytonasienne.json": {
                 "title": "okrytonasienne.json",
