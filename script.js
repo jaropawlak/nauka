@@ -7,7 +7,7 @@
   
   // DOM Elements
   const datasetsContainer = document.getElementById("datasets");
-  const startBtn = document.getElementById("start-btn");
+const startBtn = document.getElementById("start-btn");
   const quizContainer = document.getElementById("quiz-container");
   const questionEl = document.getElementById("question");
   const answerEl = document.getElementById("answer");
@@ -233,7 +233,8 @@ function updateDailyProgress() {
   
   // Clear progress when the quiz is done
   function clearProgress() {
-    localStorage.removeItem(dbKey);
+      currentIndex = 0;
+      localStorage.removeItem(dbKey);
   }
 
   // Reveal the answer
@@ -245,7 +246,7 @@ function updateDailyProgress() {
  
 
   startBtn.addEventListener("click", async () => {
-    loadProgress();
+    clearProgress();
     startQuiz();
   });
 
@@ -362,69 +363,32 @@ const indexUrl = 'index.json';
             const urls = await list.json();
             await saveData("index", urls);
           
-		for (const url of extractTitle( urls)) {
+	for (const url of extractTitle( urls)) {
               const response = await fetch(baseUrl + url.file);
               if (!response.ok) throw new Error(`Błąd podczas pobierania danych z ${url.url}`);
               const data = await response.json();
               await saveData(url.title, data); // Zapis danych z każdego źródła
-            }
-            alert('Dane zostały zapisane w IndexedDB.');
+        }
+		//reload current page
+		window.location.reload();
           } catch (error) {
             alert('Wystąpił problem: ' + error.message);
           }
         }
     
 
-function createRow(item, container){
-    const checkbox = document.createElement("input"); // Create input element
-    const title = item.title;
-    const name = item.title;
-
-    checkbox.type = "checkbox"; // Set type to checkbox
-    checkbox.value = title; // Set value from array
-    checkbox.id = title; // Set ID for label association
-              
-                  const label = document.createElement("label"); // Create label
-                  label.htmlFor =  title; // Associate label with checkbox
-                  label.appendChild(document.createTextNode( name)); // Add text to label
-                
-                  const lineBreak = document.createElement("br"); // Add line break
-                
-                  // Append checkbox, label, and line break to the container
-                  container.appendChild(checkbox);
-                  container.appendChild(label);
-        }
-             async function refreshIndex() {
-             loadDataById("index", function(data) {
-                 createNestedView(data, selectSource);
-		 /*
-		 for (const url in data || []) {
-		     const item = data["url"];
-		     if (item.title) {
-			 createRow(item, selectSource);
-		     } else {
-			 buildIndex(url, item, selectSource);
-		     } */
-            
-            
-            });
-          
-             }
 
     function createNestedView(data, container) {
       for (const key in data) {
         const value = data[key];
-
-        // Create a container for the group/subgroup or leaf
         const groupElement = document.createElement("div");
         groupElement.classList.add("group");
 
         if (value.title) {
-          // Leaf node: Add a checkbox with the title
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
-            checkbox.name = value.title;
-	    checkbox.value = value.title;
+          checkbox.name = value.title;
+          checkbox.value = value.title;
           checkbox.id = value.title;
 
           const label = document.createElement("label");
@@ -457,7 +421,14 @@ function createRow(item, container){
         container.appendChild(groupElement);
       }
     }
-     
+
+ async function refreshIndex() {
+             loadDataById("index", function(data) {
+                 createNestedView(data, selectSource);
+            });
+          
+             }
+
         // Obsługa przycisków
         document.getElementById('fetchData').addEventListener('click', fetchData);
         document.getElementById('clearData').addEventListener('click', clearData);
