@@ -1,13 +1,16 @@
-
-  // Variables
-  let questions = [];
-  let currentIndex = 0;
-  let progress = [];
+const Types: { Standard: "standard", Daily: "daily", WrongQuestions:"wrong" }
+let currentQuiz = {
+    questions: [],
+    currentIndex: 0,
+    p_type: Types.Standard
+};
+function Question() {
+    return currentQuiz.questions[currentQuiz.currentIndex];
+}
   const dbKey = "quiz-progress";
-  
   // DOM Elements
   const datasetsContainer = document.getElementById("datasets");
-const startBtn = document.getElementById("start-btn");
+  const startBtn = document.getElementById("start-btn");
   const quizContainer = document.getElementById("quiz-container");
   const questionEl = document.getElementById("question");
   const answerEl = document.getElementById("answer");
@@ -16,13 +19,18 @@ const startBtn = document.getElementById("start-btn");
   const correctBtn = document.getElementById("correct-btn");
   const incorrectBtn = document.getElementById("incorrect-btn");
   const progressEl = document.getElementById("progress");
-  
   const dailyQuizBtn = document.getElementById("daily-quiz-btn");
 const dailyKey = "daily-quiz-progress";
-let dailyQuestions = [];
-let dailyCurrentIndex = 0;
+        const output = document.getElementById('output');
+        const selectSource = document.getElementById('selectSource');
+        const dbName = 'multiSourceCacheDB';
+        const storeName = 'cachedData';
+        const baseUrl = 'https://jaropawlak.github.io/nauka/data/'; 
+        const indexUrl = 'index.json';
+        let db;
 let quiz = "none";
 let wrongQuestions = JSON.parse(localStorage.getItem('wrongQuestions')) || [];
+
 function saveWrongQuestions() {
   localStorage.setItem('wrongQuestions', JSON.stringify(wrongQuestions));
 }
@@ -30,31 +38,28 @@ function saveWrongQuestions() {
 // Mark Daily Quiz Correct
 correctBtn.addEventListener("click", () => {
   if (quiz === "wrong") {
-    const currentQuestion = quiz == "daily" ? dailyQuestions[dailyCurrentIndex] : questions[currentIndex];
+         const currentQuestion = Question();
     wrongQuestions = wrongQuestions.filter(q => q.question !== currentQuestion.question);
     saveWrongQuestions();
   }
-  if (dailyQuestions.length > 0) {
-    dailyCurrentIndex++;
-    saveDailyProgress();
-    showDailyQuestion();
-  } else {
-    currentIndex++;
-    saveProgress();
-    showQuestion();
-  }
-});
+    currentQuiz.currentIndex++;
+    saveProgress(); // sprawdz save progress
+    showNextQuestion();
+    
+ });
 
 // Mark Daily Quiz Incorrect
 incorrectBtn.addEventListener("click", () => {
-  if (quiz !== "wrong") {
-  const currentQuestion = quiz == "daily" ? dailyQuestions[dailyCurrentIndex] : questions[currentIndex];
+    const currentQuestion = Question(); //TODO: trzeba wstawic tez pytanie nieodpowiedziane na koniec
+    if (quiz !== "wrong") {
+    
   // Add to wrongQuestions if not already there
   if (!wrongQuestions.some(q => q.question === currentQuestion.question)) {
       wrongQuestions.push(currentQuestion);
       saveWrongQuestions();
   }
-}
+  }
+    
   if (dailyQuestions.length > 0) {
     dailyQuestions.push(dailyQuestions[dailyCurrentIndex]); // Append to end
     dailyCurrentIndex++;
@@ -70,12 +75,9 @@ incorrectBtn.addEventListener("click", () => {
  
 function getSelectedValues() {
   const checkedCheckboxes = document.querySelectorAll('#selectSource input[type="checkbox"]:checked');
-  
-  // Extract values into an array
   const values = Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
   return values;
 }
- // Start the quiz
  function startQuiz() {
   quiz = "standard"
   questions = [];
@@ -91,13 +93,9 @@ function getSelectedValues() {
               questions = shuffleArray(questions);
               showQuestion();
             }
-           
           });
   });
-    
 }
-  
-  // Show the current question
   function showQuestion() {
     if (currentIndex >= questions.length) {
       alert("Quiz completed!");
@@ -105,20 +103,14 @@ function getSelectedValues() {
       location.reload(); // Restart quiz
       return;
     }
-  
-    const questionObj = questions[currentIndex];
+      const questionObj = Question();
     questionEl.textContent = questionObj.question;
     answerEl.innerHTML = questionObj.answer;
     answerEl.style.display = "none";
     answerContainer.style.display = "none";
-  
-    updateProgress();
+      updatePDesc();
   }
-  
-  
-// Handle Daily Quiz button click
 dailyQuizBtn.addEventListener("click", async () => {
- 
   allQuestions = [];
   const sources = getSelectedValues();
   let counter = 0;
@@ -133,18 +125,11 @@ dailyQuizBtn.addEventListener("click", async () => {
              
               loadDailyProgress(allQuestions);
               startDailyQuiz();
-
             }
-           
           });
   });
-    
-
- 
-
-  
 });
-// Utility to shuffle questions randomly
+
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -152,118 +137,70 @@ function shuffleArray(array) {
   }
   return array;
 }
-
-// Start Daily Quiz
 function startDailyQuiz() {
   quiz = "daily";
   document.getElementById("dataset-selection").style.display = "none";
   quizContainer.style.display = "block";
-  showDailyQuestion();
+  showNextQuestion();
 }
-
-// Show Daily Quiz Question
-function showDailyQuestion() {
-  if (dailyCurrentIndex >= dailyQuestions.length) {
-    alert("Daily Quiz completed!");
-    clearDailyProgress();
-    location.reload(); // Restart app
-    return;
-  }
-
-  const questionObj = dailyQuestions[dailyCurrentIndex];
-  questionEl.textContent = questionObj.question;
-  answerEl.textContent = questionObj.answer;
-  answerEl.style.display = "none";
-  answerContainer.style.display = "none";
-
-  updateDailyProgress();
+function showNextQuestion() {
+    if (currentQuiz.currentIndex >= currentQuiz.questions.length) {
+	alert("Quiz completed!");
+	clearProgress(); 
+	location.reload();
+	return;
+    }
+    let q = Question();
+    questionEl.textContent = questionObj.question;
+    answerEl.textContent = questionObj.answer;
+    answerEl.style.display = "none";
+    answerContainer.style.display = "none";
+    updatePDesc();
 }
-
-// Save Daily Quiz Progress
-function saveDailyProgress() {
-  const progress = { dailyQuestions, dailyCurrentIndex };
-  localStorage.setItem(dailyKey, JSON.stringify(progress));
-}
-
-// Load Daily Quiz Progress
 function loadDailyProgress(allQuestions) {
   const saved = localStorage.getItem(dailyKey);
   if (saved) {
-    const data = JSON.parse(saved);
-    dailyQuestions = data.dailyQuestions;
-    dailyCurrentIndex = data.dailyCurrentIndex;
+    currentQuiz = JSON.parse(saved);
   } else {
-    dailyQuestions = shuffleArray(allQuestions).slice(0, 50); // Pick 50 random questions
-    dailyCurrentIndex = 0;
-    saveDailyProgress();
+    currentQuiz.questions = shuffleArray(allQuestions).slice(0, 50); // Pick 50 random questions
+      currentQuiz.currentIndex = 0;
+      currentQuiz.p_type = Types.Daily;
+    saveProgress();
   }
 }
-
-// Clear Daily Quiz Progress
-function clearDailyProgress() {
-  localStorage.removeItem(dailyKey);
+function getDbKey(p_type) {
+    if (p_type == Types.Daily) {
+	return dailyKey;
+    }
+    return dbKey;
 }
-
-// Update Daily Quiz Progress
-function updateDailyProgress() {
-  progressEl.textContent = `Pytanie ${dailyCurrentIndex + 1} z ${dailyQuestions.length}`;
+function clearProgress() {
+    let key = getDbKey(currentQuiz.p_type);
+    currentQuiz.currentIndex = 0;
+    localStorage.removeItem(key);
 }
-
-
-  // Update progress text
-  function updateProgress() {
-    progressEl.textContent = `Pytanie ${currentIndex + 1} z ${questions.length}`;
-  }
-  
-  // Save progress to browser storage
+function updatePDesc() {
+    progressEl.textContent = `Pytanie ${currentQuiz.currentIndex + 1} z ${currentQuiz.questions.length}`;
+}
   function saveProgress() {
-    progress = { questions, currentIndex };
-    localStorage.setItem(dbKey, JSON.stringify(progress));
+      localStorage.setItem(getDbKey(currentQuiz.p_type), JSON.stringify(currentQuiz));
   }
-  
-  // Load progress from browser storage
   function loadProgress() {
-    const saved = localStorage.getItem(dbKey);
+    const saved = localStorage.getItem(getDbKey(currentQuiz.p_type));
     if (saved) {
       const data = JSON.parse(saved);
-      questions = data.questions;
-      currentIndex = data.currentIndex;
+	currentQuiz = data;
     }
   }
-  
-  // Clear progress when the quiz is done
-  function clearProgress() {
-      currentIndex = 0;
-      localStorage.removeItem(dbKey);
-  }
-
   // Reveal the answer
   revealBtn.addEventListener("click", () => {
     answerEl.style.display = "block";
     answerContainer.style.display = "block";
   });
-  
- 
-
   startBtn.addEventListener("click", async () => {
     clearProgress();
     startQuiz();
   });
-
-        const output = document.getElementById('output');
-        const selectSource = document.getElementById('selectSource');
-    
-        const dbName = 'multiSourceCacheDB';
-        const storeName = 'cachedData';
-    
-        // Lista adresów URL
-        const baseUrl = 'https://jaropawlak.github.io/nauka/data/'; 
-
-const indexUrl = 'index.json';
-
-  
-        let db;
-    
         function startWrongQuestionsQuiz() {
           quiz = "wrong";
           if (wrongQuestions.length === 0) {
@@ -276,24 +213,20 @@ const indexUrl = 'index.json';
               showQuestion();
           }
       }
-        // Otwieranie lub tworzenie bazy danych IndexedDB
+
         function openDB() {
           return new Promise((resolve, reject) => {
             const request = indexedDB.open(dbName, 1);
-    
             request.onupgradeneeded = (event) => {
               const db = event.target.result;
               if (!db.objectStoreNames.contains(storeName)) {
                 db.createObjectStore(storeName, { keyPath: 'id' });
               }
             };
-    
             request.onsuccess = (event) => resolve(event.target.result);
             request.onerror = (event) => reject('Błąd otwierania DB: ' + event.target.errorCode);
           });
         }
-    
-        // Zapis danych do IndexedDB dla każdego źródła
         async function saveData(id, data) {
           db = db || (await openDB());
           const tx = db.transaction(storeName, 'readwrite');
@@ -301,8 +234,6 @@ const indexUrl = 'index.json';
           store.put({ id, data });
           await tx.complete;
         }
-    
-        // Odczyt danych z konkretnego źródła po ID
         async function loadDataById(id, callback) {
           db = db || (await openDB());
           const tx = db.transaction(storeName, 'readonly');
@@ -323,8 +254,7 @@ const indexUrl = 'index.json';
             output.innerHTML = 'Błąd podczas ładowania danych.';
           };
         }
-    
-        // Funkcja do czyszczenia danych z IndexedDB
+
         async function clearData() {
           db = db || (await openDB());
           const tx = db.transaction(storeName, 'readwrite');
