@@ -1,4 +1,4 @@
-const Types: { Standard: "standard", Daily: "daily", WrongQuestions:"wrong" }
+let Types= { Standard: "standard", Daily: "daily", WrongQuestions:"wrong" }
 let currentQuiz = {
     questions: [],
     currentIndex: 0,
@@ -6,6 +6,11 @@ let currentQuiz = {
 };
 function Question() {
     return currentQuiz.questions[currentQuiz.currentIndex];
+}
+function setupQuiz(questions, p_type) {
+    currentQuiz = { questions: questions,
+		    p_type: p_type,
+		    currentIndex: -1};
 }
   const dbKey = "quiz-progress";
   // DOM Elements
@@ -21,6 +26,7 @@ function Question() {
   const progressEl = document.getElementById("progress");
   const dailyQuizBtn = document.getElementById("daily-quiz-btn");
 const dailyKey = "daily-quiz-progress";
+const wrongKey = "wrongquestions";
         const output = document.getElementById('output');
         const selectSource = document.getElementById('selectSource');
         const dbName = 'multiSourceCacheDB';
@@ -29,48 +35,30 @@ const dailyKey = "daily-quiz-progress";
         const indexUrl = 'index.json';
         let db;
 let quiz = "none";
-let wrongQuestions = JSON.parse(localStorage.getItem('wrongQuestions')) || [];
+let wrongQuestions = loadProgress(Types.WrongQuestions)|| { questions: [], currentIndex: 0, p_type: Types.WrongQuestions };
 
-function saveWrongQuestions() {
-  localStorage.setItem('wrongQuestions', JSON.stringify(wrongQuestions));
-}
 
-// Mark Daily Quiz Correct
 correctBtn.addEventListener("click", () => {
   if (quiz === "wrong") {
          const currentQuestion = Question();
-    wrongQuestions = wrongQuestions.filter(q => q.question !== currentQuestion.question);
-    saveWrongQuestions();
+    wrongQuestions.questions = wrongQuestions.questions.filter(q => q.question !== currentQuestion.question);
+    saveProgress(wrongQuestions);
   }
-    currentQuiz.currentIndex++;
     saveProgress(); // sprawdz save progress
     showNextQuestion();
     
  });
-
-// Mark Daily Quiz Incorrect
 incorrectBtn.addEventListener("click", () => {
-    const currentQuestion = Question(); //TODO: trzeba wstawic tez pytanie nieodpowiedziane na koniec
-    if (quiz !== "wrong") {
-    
-  // Add to wrongQuestions if not already there
-  if (!wrongQuestions.some(q => q.question === currentQuestion.question)) {
-      wrongQuestions.push(currentQuestion);
-      saveWrongQuestions();
+    const currentQuestion = Question();
+    currentQuiz.questions.push(currentQuestion);
+    if (currentQuiz.p_type !== Types.WrongQuestions) {
+      if (!wrongQuestions.questions.some(q => q.question === currentQuestion.question)) {
+         wrongQuestions.questions.push(currentQuestion);
+         saveProgress(wrongQuestions);
   }
   }
-    
-  if (dailyQuestions.length > 0) {
-    dailyQuestions.push(dailyQuestions[dailyCurrentIndex]); // Append to end
-    dailyCurrentIndex++;
-    saveDailyProgress();
-    showDailyQuestion();
-  } else {
-    questions.push(questions[currentIndex]);
-    currentIndex++;
-    saveProgress();
-    showQuestion();
-  }
+     saveProgress(); 
+    showNextQuestion();
 });
  
 function getSelectedValues() {
@@ -90,26 +78,12 @@ function getSelectedValues() {
             document.getElementById("dataset-selection").style.display = "none";
             quizContainer.style.display = "block";
             if (counter === sources.length) {
-              questions = shuffleArray(questions);
-              showQuestion();
+		setupQuiz(shuffleArray(questions), Types.Standard);
+		showNextQuestion();
             }
           });
   });
 }
-  function showQuestion() {
-    if (currentIndex >= questions.length) {
-      alert("Quiz completed!");
-      clearProgress();
-      location.reload(); // Restart quiz
-      return;
-    }
-      const questionObj = Question();
-    questionEl.textContent = questionObj.question;
-    answerEl.innerHTML = questionObj.answer;
-    answerEl.style.display = "none";
-    answerContainer.style.display = "none";
-      updatePDesc();
-  }
 dailyQuizBtn.addEventListener("click", async () => {
   allQuestions = [];
   const sources = getSelectedValues();
@@ -124,12 +98,13 @@ dailyQuizBtn.addEventListener("click", async () => {
               allQuestions = shuffleArray(allQuestions);
              
               loadDailyProgress(allQuestions);
-              startDailyQuiz();
+              document.getElementById("dataset-selection").style.display = "none";
+              quizContainer.style.display = "block";
+              showNextQuestion();
             }
           });
   });
 });
-
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -137,13 +112,9 @@ function shuffleArray(array) {
   }
   return array;
 }
-function startDailyQuiz() {
-  quiz = "daily";
-  document.getElementById("dataset-selection").style.display = "none";
-  quizContainer.style.display = "block";
-  showNextQuestion();
-}
+
 function showNextQuestion() {
+    currentQuiz.currentIndex++;
     if (currentQuiz.currentIndex >= currentQuiz.questions.length) {
 	alert("Quiz completed!");
 	clearProgress(); 
@@ -151,26 +122,18 @@ function showNextQuestion() {
 	return;
     }
     let q = Question();
-    questionEl.textContent = questionObj.question;
-    answerEl.textContent = questionObj.answer;
+    questionEl.textContent = q.question;
+    answerEl.textContent = q.answer;
     answerEl.style.display = "none";
     answerContainer.style.display = "none";
     updatePDesc();
 }
-function loadDailyProgress(allQuestions) {
-  const saved = localStorage.getItem(dailyKey);
-  if (saved) {
-    currentQuiz = JSON.parse(saved);
-  } else {
-    currentQuiz.questions = shuffleArray(allQuestions).slice(0, 50); // Pick 50 random questions
-      currentQuiz.currentIndex = 0;
-      currentQuiz.p_type = Types.Daily;
-    saveProgress();
-  }
-}
 function getDbKey(p_type) {
     if (p_type == Types.Daily) {
 	return dailyKey;
+    }
+    if (p_type == Types.WrongQuestions) {
+	return wrongKey;
     }
     return dbKey;
 }
@@ -182,16 +145,31 @@ function clearProgress() {
 function updatePDesc() {
     progressEl.textContent = `Pytanie ${currentQuiz.currentIndex + 1} z ${currentQuiz.questions.length}`;
 }
-  function saveProgress() {
-      localStorage.setItem(getDbKey(currentQuiz.p_type), JSON.stringify(currentQuiz));
+  function saveProgress(quiz = currentQuiz) {
+      localStorage.setItem(getDbKey(quiz.p_type), JSON.stringify(quiz));
   }
-  function loadProgress() {
-    const saved = localStorage.getItem(getDbKey(currentQuiz.p_type));
+function loadDailyProgress(allQuestions) {
+  const saved = localStorage.getItem(dailyKey);
+  if (saved) {
+    currentQuiz = JSON.parse(saved);
+  } else {
+    currentQuiz.questions = shuffleArray(allQuestions).slice(0, 50); // Pick 50 random questions
+      currentQuiz.currentIndex = -1;
+      currentQuiz.p_type = Types.Daily;
+    saveProgress();
+  }
+}
+
+function loadProgress(p_type, or_use_default) {
+    const saved = localStorage.getItem(getDbKey(p_type));
     if (saved) {
       const data = JSON.parse(saved);
 	currentQuiz = data;
+    } else if (or_use_default) {
+	currentQuiz = or_use_default;
     }
-  }
+   return currentQuiz;
+}
   // Reveal the answer
   revealBtn.addEventListener("click", () => {
     answerEl.style.display = "block";
@@ -203,14 +181,16 @@ function updatePDesc() {
   });
         function startWrongQuestionsQuiz() {
           quiz = "wrong";
-          if (wrongQuestions.length === 0) {
+          if (wrongQuestions.questions.length === 0) {
               alert("No wrong questions to review!");
           } else {
-              questions = [...wrongQuestions];
-              currentIndex = 0;
+              currentQuiz.questions = [...wrongQuestions.questions];
+              currentQuiz.currentIndex = -1;
+	      currentQuiz.p_type = Types.WrongQuestions;
               document.getElementById("dataset-selection").style.display = "none";
               quizContainer.style.display = "block";
-              showQuestion();
+
+	      showNextQuestion();
           }
       }
 
@@ -272,10 +252,8 @@ function updatePDesc() {
       const value = node[key];
       if (typeof value === "object" && value !== null) {
         if (value.title && value.file) {
-          // Jeśli obiekt jest liściem, dodaj parę title/name
           result.push({ title: value.title, file: value.file });
         } else {
-          // Jeśli to grupa/podgrupa, kontynuuj rekurencję
           traverse(value);
         }
       }
@@ -352,12 +330,7 @@ function updatePDesc() {
       }
     }
 
- async function refreshIndex() {
-             loadDataById("index", function(data) {
-                 createNestedView(data, selectSource);
-            });
-          
-             }
+ async function refreshIndex() { loadDataById("index", function(data) { createNestedView(data, selectSource); }); }
 
         // Obsługa przycisków
         document.getElementById('fetchData').addEventListener('click', fetchData);
