@@ -1,19 +1,4 @@
-let Types= { Standard: "standard", Daily: "daily", WrongQuestions:"wrong" }
-let currentQuiz = {
-    questions: [],
-    currentIndex: 0,
-    p_type: Types.Standard
-};
-function Question() {
-    return currentQuiz.questions[currentQuiz.currentIndex];
-}
-function setupQuiz(questions, p_type) {
-    currentQuiz = { questions: questions,
-		    p_type: p_type,
-		    currentIndex: -1};
-}
-  const dbKey = "quiz-progress";
-  // DOM Elements
+const dbKey = "quiz-progress";
   const datasetsContainer = document.getElementById("datasets");
   const startBtn = document.getElementById("start-btn");
   const quizContainer = document.getElementById("quiz-container");
@@ -34,17 +19,23 @@ const wrongKey = "wrongquestions";
         const baseUrl = 'https://jaropawlak.github.io/nauka/data/'; 
         const indexUrl = 'index.json';
         let db;
-let quiz = "none";
+let Types= { Standard: "standard", Daily: "daily", WrongQuestions:"wrong" }
+let currentQuiz = {
+    questions: [],
+    currentIndex: 0,
+    p_type: Types.Standard
+};
+function Question() { return currentQuiz.questions[currentQuiz.currentIndex];}
+function setupQuiz(questions, p_type) { return { questions: questions, p_type: p_type, currentIndex: -1}; }
 let wrongQuestions = loadProgress(Types.WrongQuestions)|| { questions: [], currentIndex: 0, p_type: Types.WrongQuestions };
 
-
 correctBtn.addEventListener("click", () => {
-  if (quiz === "wrong") {
+  if (currentQuiz.p_type == Types.WrongQuestions) {
          const currentQuestion = Question();
     wrongQuestions.questions = wrongQuestions.questions.filter(q => q.question !== currentQuestion.question);
     saveProgress(wrongQuestions);
   }
-    saveProgress(); // sprawdz save progress
+    saveProgress();
     showNextQuestion();
     
  });
@@ -52,22 +43,19 @@ incorrectBtn.addEventListener("click", () => {
     const currentQuestion = Question();
     currentQuiz.questions.push(currentQuestion);
     if (currentQuiz.p_type !== Types.WrongQuestions) {
-      if (!wrongQuestions.questions.some(q => q.question === currentQuestion.question)) {
+      if (!wrongQuestions.questions.some(q => q.question === currentQuestion)) {
          wrongQuestions.questions.push(currentQuestion);
          saveProgress(wrongQuestions);
-  }
-  }
+  } }
      saveProgress(); 
     showNextQuestion();
 });
  
 function getSelectedValues() {
   const checkedCheckboxes = document.querySelectorAll('#selectSource input[type="checkbox"]:checked');
-  const values = Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
-  return values;
+  return Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
 }
  function startQuiz() {
-  quiz = "standard"
   questions = [];
   const sources = getSelectedValues();
   let counter = 0;
@@ -78,7 +66,7 @@ function getSelectedValues() {
             document.getElementById("dataset-selection").style.display = "none";
             quizContainer.style.display = "block";
             if (counter === sources.length) {
-		setupQuiz(shuffleArray(questions), Types.Standard);
+		currentQuiz = setupQuiz(shuffleArray(questions), Types.Standard);
 		showNextQuestion();
             }
           });
@@ -92,12 +80,9 @@ dailyQuizBtn.addEventListener("click", async () => {
          loadDataById(selectedId, function(data) {
           allQuestions = allQuestions.concat(data);
             counter++;
-            document.getElementById("dataset-selection").style.display = "none";
             quizContainer.style.display = "block";
             if (counter === sources.length) {
-              allQuestions = shuffleArray(allQuestions);
-             
-              loadDailyProgress(allQuestions);
+		currentQuiz = loadProgress() || setupQuiz(shuffleArray(allQuestions).slice(0, 50), Types.Daily);
               document.getElementById("dataset-selection").style.display = "none";
               quizContainer.style.display = "block";
               showNextQuestion();
@@ -112,7 +97,13 @@ function shuffleArray(array) {
   }
   return array;
 }
-
+function displayQuestion(q) {
+    questionEl.textContent = q.question;
+    answerEl.textContent = q.answer;
+    answerEl.style.display = "none";
+    answerContainer.style.display = "none";
+    updatePDesc();
+}
 function showNextQuestion() {
     currentQuiz.currentIndex++;
     if (currentQuiz.currentIndex >= currentQuiz.questions.length) {
@@ -121,54 +112,28 @@ function showNextQuestion() {
 	location.reload();
 	return;
     }
-    let q = Question();
-    questionEl.textContent = q.question;
-    answerEl.textContent = q.answer;
-    answerEl.style.display = "none";
-    answerContainer.style.display = "none";
-    updatePDesc();
+    displayQuestion(Question());
 }
 function getDbKey(p_type) {
-    if (p_type == Types.Daily) {
-	return dailyKey;
+    switch(p_type) {
+	case Types.Daily: return dailyKey;
+	case Types.WrongQuestions: return wrongKey;
+	default: return dbKey;
     }
-    if (p_type == Types.WrongQuestions) {
-	return wrongKey;
-    }
-    return dbKey;
 }
 function clearProgress() {
     let key = getDbKey(currentQuiz.p_type);
-    currentQuiz.currentIndex = 0;
+    currentQuiz.currentIndex = -1;
     localStorage.removeItem(key);
 }
-function updatePDesc() {
-    progressEl.textContent = `Pytanie ${currentQuiz.currentIndex + 1} z ${currentQuiz.questions.length}`;
-}
-  function saveProgress(quiz = currentQuiz) {
-      localStorage.setItem(getDbKey(quiz.p_type), JSON.stringify(quiz));
-  }
-function loadDailyProgress(allQuestions) {
-  const saved = localStorage.getItem(dailyKey);
-  if (saved) {
-    currentQuiz = JSON.parse(saved);
-  } else {
-    currentQuiz.questions = shuffleArray(allQuestions).slice(0, 50); // Pick 50 random questions
-      currentQuiz.currentIndex = -1;
-      currentQuiz.p_type = Types.Daily;
-    saveProgress();
-  }
-}
-
-function loadProgress(p_type, or_use_default) {
+function updatePDesc() { progressEl.textContent = `Pytanie ${currentQuiz.currentIndex + 1} z ${currentQuiz.questions.length}`; }
+function saveProgress(quiz = currentQuiz) { localStorage.setItem(getDbKey(quiz.p_type), JSON.stringify(quiz)); }
+function loadProgress(p_type) {
     const saved = localStorage.getItem(getDbKey(p_type));
     if (saved) {
-      const data = JSON.parse(saved);
-	currentQuiz = data;
-    } else if (or_use_default) {
-	currentQuiz = or_use_default;
+      return JSON.parse(saved);
     }
-   return currentQuiz;
+    return false;
 }
   // Reveal the answer
   revealBtn.addEventListener("click", () => {
@@ -180,7 +145,6 @@ function loadProgress(p_type, or_use_default) {
     startQuiz();
   });
         function startWrongQuestionsQuiz() {
-          quiz = "wrong";
           if (wrongQuestions.questions.length === 0) {
               alert("No wrong questions to review!");
           } else {
@@ -189,7 +153,6 @@ function loadProgress(p_type, or_use_default) {
 	      currentQuiz.p_type = Types.WrongQuestions;
               document.getElementById("dataset-selection").style.display = "none";
               quizContainer.style.display = "block";
-
 	      showNextQuestion();
           }
       }
@@ -225,11 +188,9 @@ function loadProgress(p_type, or_use_default) {
             if (result) {
                 callback(result.data);
                 return result.data;
-             
             } 
             return null;
           };
-    
           request.onerror = () => {
             output.innerHTML = 'Błąd podczas ładowania danych.';
           };
@@ -259,18 +220,15 @@ function loadProgress(p_type, or_use_default) {
       }
     }
   }
-
   traverse(data);
   return result;
 }
-
         // Pobieranie danych z wszystkich źródeł
         async function fetchData() {
             try {
             const list = await fetch(baseUrl + indexUrl);
             const urls = await list.json();
             await saveData("index", urls);
-          
 	for (const url of extractTitle( urls)) {
               const response = await fetch(baseUrl + url.file);
               if (!response.ok) throw new Error(`Błąd podczas pobierania danych z ${url.url}`);
@@ -283,9 +241,6 @@ function loadProgress(p_type, or_use_default) {
             alert('Wystąpił problem: ' + error.message);
           }
         }
-    
-
-
     function createNestedView(data, container) {
       for (const key in data) {
         const value = data[key];
