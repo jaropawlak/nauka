@@ -1,6 +1,7 @@
 #! python
 import os
 import json
+import shutil
 
 # Funkcja do parsowania pojedynczego pliku .txt
 def parse_txt_file(file_path):
@@ -49,7 +50,7 @@ def add_to_hierarchy(hierarchy, rel_path):
     # Dodajemy plik do końcowego poziomu
     current_level[parts[-1]] = {
         "title": os.path.basename(rel_path).replace(".txt", ""),
-        "file": os.path.basename(rel_path).replace(".txt", ".json")
+        "file": rel_path.replace(".txt", ".json")
     }
 
 # Funkcja do przetwarzania katalogu
@@ -60,18 +61,18 @@ def process_directory(directory, directory_output):
         for file in files:
             file_path = os.path.join(root, file)
             rel_path = os.path.relpath(file_path, directory)
+            rel_dir = os.path.dirname(rel_path)
+            output_path_with_rel = os.path.dirname(os.path.join(directory_output, rel_path))
+            json_file_name = file.replace(".txt", ".json")
+            json_file_path = os.path.join(output_path_with_rel, json_file_name)
+            os.makedirs(output_path_with_rel, exist_ok=True)
             if file.endswith(".txt"):
-                                
-                # Parsowanie pliku
+                 # Parsowanie pliku
                 data = parse_txt_file(file_path)
-
-                # Tworzenie pliku wynikowego JSON
-                json_file_name = file.replace(".txt", ".json")
-                json_file_path = os.path.join(directory_output, json_file_name)
-                
                 with open(json_file_path, "w", encoding="utf-8") as json_file:
                     json.dump(data, json_file, ensure_ascii=False, indent=4)
-
+            elif file.endswith(".json"):
+                shutil.copy(file_path, json_file_path)
                 # Dodanie danych do hierarchii
             add_to_hierarchy(index_hierarchy, rel_path)
 

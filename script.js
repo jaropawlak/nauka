@@ -16,8 +16,9 @@ const wrongKey = "wrongquestions";
         const selectSource = document.getElementById('selectSource');
         const dbName = 'multiSourceCacheDB';
         const storeName = 'cachedData';
-        const baseUrl = 'https://jaropawlak.github.io/nauka/data/'; 
-        const indexUrl = 'index.json';
+//        const baseUrl = 'https://jaropawlak.github.io/nauka/data/'; 
+const baseUrl = '/data/';
+const indexUrl = 'index.json';
         let db;
 let Types= { Standard: "standard", Daily: "daily", WrongQuestions:"wrong" }
 let currentQuiz = {
@@ -233,7 +234,7 @@ function loadProgress(p_type) {
               const response = await fetch(baseUrl + url.file);
               if (!response.ok) throw new Error(`Błąd podczas pobierania danych z ${url.url}`);
               const data = await response.json();
-              await saveData(url.title, data); // Zapis danych z każdego źródła
+              await saveData(url.file, data); // Zapis danych z każdego źródła
         }
 		//reload current page
 		window.location.reload();
@@ -251,7 +252,7 @@ function loadProgress(p_type) {
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
           checkbox.name = value.title;
-          checkbox.value = value.title;
+          checkbox.value = value.file;
           checkbox.id = value.title;
 
           const label = document.createElement("label");

@@ -1,41 +1,43 @@
 {
-    "lowiectwo": {
-        "okresy_polowan.txt": {
-            "title": "okresy_polowan",
-            "file": "okresy_polowan.json"
-        }
-    },
     "szkola": {
         "niemiecki": {
             "czas_przeszly.txt": {
                 "title": "czas_przeszly",
-                "file": "czas_przeszly.json"
+                "file": "szkola/niemiecki/czas_przeszly.json"
             }
         },
         "fizyka": {
             "drgania.json": {
                 "title": "drgania.json",
-                "file": "drgania.json"
+                "file": "szkola/fizyka/drgania.json"
             }
         },
         "biologia": {
             "mchy.txt": {
                 "title": "mchy",
-                "file": "mchy.json"
+                "file": "szkola/biologia/mchy.json"
             },
             "okrytonasienne.json": {
                 "title": "okrytonasienne.json",
-                "file": "okrytonasienne.json"
+                "file": "szkola/biologia/okrytonasienne.json"
             },
             "mchowce.json": {
                 "title": "mchowce.json",
-                "file": "mchowce.json"
+                "file": "szkola/biologia/mchowce.json"
             }
         },
         "matematyka": {
             "wielomiany.json": {
                 "title": "wielomiany.json",
-                "file": "wielomiany.json"
+                "file": "szkola/matematyka/wielomiany.json"
+            }
+        }
+    },
+    "szkolenia": {
+        "lowiectwo": {
+            "okresy_polowan.txt": {
+                "title": "okresy_polowan",
+                "file": "szkolenia/lowiectwo/okresy_polowan.json"
             }
         }
     }
