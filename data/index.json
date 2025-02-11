@@ -17,6 +17,10 @@
                 "title": "mchy",
                 "file": "szkola/biologia/mchy.json"
             },
+            "gospodarka_wodna.txt": {
+                "title": "gospodarka_wodna",
+                "file": "szkola/biologia/gospodarka_wodna.json"
+            },
             "okrytonasienne.json": {
                 "title": "okrytonasienne.json",
                 "file": "szkola/biologia/okrytonasienne.json"
