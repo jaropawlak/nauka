@@ -17,7 +17,7 @@ const wrongKey = "wrongquestions";
         const dbName = 'multiSourceCacheDB';
         const storeName = 'cachedData';
 //        const baseUrl = 'https://jaropawlak.github.io/nauka/data/'; 
-const baseUrl = '/data/';
+const baseUrl = '/nauka/data/';
 const indexUrl = 'index.json';
         let db;
 let Types= { Standard: "standard", Daily: "daily", WrongQuestions:"wrong" }
